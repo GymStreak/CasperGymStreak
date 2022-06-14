@@ -12,6 +12,8 @@
     {{!-- Theme assets - use the {asset} helper to reference styles & scripts,
     this will take care of caching and cache-busting automatically --}}
     <link rel="stylesheet" type="text/css" href="{{asset "built/screen.css"}}" />
+    <link rel="stylesheet" href="{{asset "css/smartbanner.min.css"}}">
+    <script src="{{asset "js/smartbanner.min.js"}}"></script>
 
     {{!-- This tag outputs all your advanced SEO meta, structured data, and other important settings,
     it should always be the last tag before the closing head tag --}}
@@ -49,6 +51,7 @@
                     {{#if @site.twitter}}
                         <a class="gh-social-link gh-social-twitter" href="{{twitter_url @site.twitter}}" title="Twitter" target="_blank" rel="noopener">{{> "icons/twitter"}}</a>
                     {{/if}}
+                    <a class="gh-social-twitter" href="#searchinghost-easy"><svg style="fill:#fff" width="16px" height="16px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M508.875,493.792L353.089,338.005c32.358-35.927,52.245-83.296,52.245-135.339C405.333,90.917,314.417,0,202.667,0 S0,90.917,0,202.667s90.917,202.667,202.667,202.667c52.043,0,99.411-19.887,135.339-52.245l155.786,155.786 c2.083,2.083,4.813,3.125,7.542,3.125c2.729,0,5.458-1.042,7.542-3.125C513.042,504.708,513.042,497.958,508.875,493.792z M202.667,384c-99.979,0-181.333-81.344-181.333-181.333S102.688,21.333,202.667,21.333S384,102.677,384,202.667 S302.646,384,202.667,384z"/></svg></a>
                 </div>
                 {{#if @site.members_enabled}}
                     {{#unless @member}}
@@ -98,7 +101,31 @@ $(document).ready(function () {
     $(".gh-content").fitVids();
 });
 </script>
+<script>
+    // For every image tag
+    $('img').each(function(key, obj) {
 
+        // Get the src of the image
+        var src = $(obj).attr('src');
+
+        // If the image src doesn't have http...
+        //  we can assume it's a relative path
+        if (src.indexOf('http') === -1) {
+            src = 'https://blog.gymstreak.com/' + src;
+        }
+
+        // If the image src doesn't have
+        //  cloudinary in the string
+        // Make it use cloudinary
+        if (src.indexOf('res.cloudinary') === -1) {
+            $(obj).attr('src',
+                'https://res.cloudinary.com/gymstreak/image/fetch/c_fit,q_auto,f_auto,dpr_auto/'
+                +
+                src
+            );
+        }
+    });
+</script>
 {{!-- Ghost outputs required functional scripts with this tag - it should always be the last thing before the closing body tag --}}
 {{ghost_foot}}
 
