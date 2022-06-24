@@ -101,31 +101,49 @@ $(document).ready(function () {
     $(".gh-content").fitVids();
 });
 </script>
-<script>
-    // For every image tag
-    $('img').each(function(key, obj) {
 
-        // Get the src of the image
-        var src = $(obj).attr('src');
 
-        // If the image src doesn't have http...
-        //  we can assume it's a relative path
-        if (src.indexOf('http') === -1) {
-            src = 'https://blog.gymstreak.com/' + src;
-        }
+{{#is"post"}}
+  <script>
+    const progressBar = document.querySelector('.reading-progress');
 
-        // If the image src doesn't have
-        //  cloudinary in the string
-        // Make it use cloudinary
-        if (src.indexOf('res.cloudinary') === -1) {
-            $(obj).attr('src',
-                'https://res.cloudinary.com/gymstreak/image/fetch/c_fit,q_auto,f_auto,dpr_auto/'
-                +
-                src
-            );
-        }
-    });
-</script>
+    function updateProgress() {
+      const height = document.body.clientHeight;
+      const position = window.scrollY;
+      const progress = position / height * 115;
+      progressBar.setAttribute('value', progress);
+      requestAnimationFrame(updateProgress);
+    }
+
+    requestAnimationFrame(updateProgress);
+  </script>
+  <script>
+      // For every image tag
+      $('img').each(function(key, obj) {
+
+          // Get the src of the image
+          var src = $(obj).attr('src');
+
+          // If the image src doesn't have http...
+          //  we can assume it's a relative path
+          if (src.indexOf('http') === -1) {
+              src = 'https://blog.gymstreak.com/' + src;
+          }
+
+          // If the image src doesn't have
+          //  cloudinary in the string
+          // Make it use cloudinary
+          if (src.indexOf('res.cloudinary') === -1) {
+              $(obj).attr('src',
+                  'https://res.cloudinary.com/gymstreak/image/fetch/c_fit,q_auto,f_auto,dpr_auto/'
+                  +
+                  src
+              );
+          }
+      });
+  </script>
+{{/is}}
+
 {{!-- Ghost outputs required functional scripts with this tag - it should always be the last thing before the closing body tag --}}
 {{ghost_foot}}
 
